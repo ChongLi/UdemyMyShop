@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using UdemyMyShop.Core.Models;
+using UdemyMyShop.Core.ViewModels;
 using UdemyMyShop.DataAccess.InMemory;
 
 namespace UdemyMyShop.WebUI.Controllers
@@ -11,10 +12,12 @@ namespace UdemyMyShop.WebUI.Controllers
     public class ProductManagerController : Controller
     {
         ProductRepository context;
+        ProductCategoryRepository productCategories;
 
         public ProductManagerController()
         {
             context = new ProductRepository();
+            productCategories = new ProductCategoryRepository();
         }
 
         // GET: ProductManager
@@ -26,8 +29,10 @@ namespace UdemyMyShop.WebUI.Controllers
 
         public ActionResult Create()
         {
-            Product product = new Product();
-            return View(product);
+            ProductManagerViewModel viewModel = new ProductManagerViewModel();
+            viewModel.Product = new Product();
+            viewModel.ProductCategories = productCategories.Collection();
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -62,6 +67,7 @@ namespace UdemyMyShop.WebUI.Controllers
         [HttpPost]
         public ActionResult Edit(Product product, string Id)
         {
+
             Product productToEdit = context.Find(Id);
 
             if (productToEdit == null)
@@ -72,7 +78,10 @@ namespace UdemyMyShop.WebUI.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return View(product);
+                    ProductManagerViewModel viewModel = new ProductManagerViewModel();
+                    viewModel.Product = product;
+                    viewModel.ProductCategories = productCategories.Collection();
+                    return View(viewModel);
                 }
 
                 productToEdit.Category = product.Category;
