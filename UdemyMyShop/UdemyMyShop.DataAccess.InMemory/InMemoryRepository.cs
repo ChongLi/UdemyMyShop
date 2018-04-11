@@ -4,11 +4,13 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Text;
 using System.Threading.Tasks;
+using UdemyMyShop.Core.Contracts;
 using UdemyMyShop.Core.Models;
+
 
 namespace UdemyMyShop.DataAccess.InMemory
 {
-    public class InMemoryRepository<T>  where T : BaseEntity
+    public class InMemoryRepository<T> : IRepository<T> where T : BaseEntity
     {
         ObjectCache cache =  MemoryCache.Default;
         List<T> items;
@@ -28,6 +30,8 @@ namespace UdemyMyShop.DataAccess.InMemory
         {
             cache[className] = items;
         }
+
+      
 
         public void Insert(T t)
         {
