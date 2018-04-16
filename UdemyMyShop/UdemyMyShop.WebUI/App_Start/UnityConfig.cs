@@ -3,6 +3,7 @@ using UdemyMyShop.Core.Contracts;
 using UdemyMyShop.Core.Models;
 using UdemyMyShop.DataAccess.InMemory;
 using UdemyMyShop.DataAccess.SQL;
+using UdemyMyShop.Services;
 using Unity;
 
 namespace UdemyMyShop.WebUI
@@ -49,6 +50,10 @@ namespace UdemyMyShop.WebUI
             //container.RegisterType<IRepository<ProductCategory>, InMemoryRepository<ProductCategory>>();
             container.RegisterType<IRepository<Product>, SQLRepository<Product>>();
             container.RegisterType<IRepository<ProductCategory>, SQLRepository<ProductCategory>>();
+            container.RegisterType<IRepository<Basket>, SQLRepository<Basket>>();
+            container.RegisterType<IRepository<BasketItem>, SQLRepository<BasketItem>>();
+            container.RegisterType<IBasketService, BasketService>();
+
         }
     }
 }
